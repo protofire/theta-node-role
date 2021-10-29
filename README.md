@@ -1,13 +1,13 @@
 Theta Full Node
 =========
 
-Use this ansible role to install docker and docker-compose and run Theta blockchain node with eth rpc adapter in docker containers container
+Use this ansible role to install docker and docker-compose and run Theta blockchain node with eth rpc adapter in docker containers
 
 Theta rpc is available on port 16888. Eth rpc is available on ports 18888 (http) and 18889 (ws)
 
-Also Ansible will check and create (if does not exist) `/data` directory and put there a snapshot file and `config.yaml` file. This directory will be mounted to the theta-node container and blockchain data will be stored there
+Ansible will check and create (if does not exist) `/data` directory and put there a snapshot file and `config.yaml` file. This directory will be mounted to the theta-node container and blockchain data will be stored there
 
-It's a good idea to mount some additional drive (e.g. SSD persistent disk in GCP) to the `/data` directory
+It's a good idea to mount an additional drive (e.g. SSD persistent disk in GCP) to the `/data` directory
 
 Requirements
 ------------
