@@ -1,0 +1,7 @@
+---
+# handlers file for theta-node
+- name: Restart docker-compose
+  become: yes
+  systemd:  
+    name: theta
+    state: restarted

@@ -1,0 +1,3 @@
+---
+# handlers file for theta-node
+- include: restart.yml

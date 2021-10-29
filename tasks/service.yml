@@ -1,0 +1,52 @@
+---
+- name: Create blockchain data directory
+  become: yes
+  file:
+    path: "/data"
+    state: directory
+    mode: "0750"
+
+- name: Create a directory for Theta docker-compose.yml
+  become: yes
+  file: 
+    path: "/etc/docker/compose/theta-node/"
+    state: directory 
+    mode: "0755"
+
+- name: Create unit-file for docker-compose
+  become: yes
+  copy:
+    src: theta.service
+    dest: /etc/systemd/system/theta.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create docker-compose.yml file
+  become: yes
+  template:
+    src: docker-compose.yml.j2
+    dest: "/etc/docker/compose/theta-node/docker-compose.yml"
+    force: yes
+    backup: yes
+    mode: 0744
+  notify:
+    - "Restart docker-compose"
+
+- name: Copy config.yaml file
+  become: yes
+  template:
+    src: config.yaml.j2
+    dest: "/data/config.yaml"
+    force: yes
+    backup: yes
+    mode: 0640
+  notify:
+    - "Restart docker-compose"
+
+- name: Enable and run Theta-node service
+  become: yes
+  systemd:  
+    name: theta
+    state: started
+    enabled: yes

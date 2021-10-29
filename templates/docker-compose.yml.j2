@@ -1,0 +1,36 @@
+---
+version: '3'
+services:
+  theta-node:
+    image: protofiremeter/theta-node:{{ theta_node_image_tag }}
+    container_name: theta-node
+    restart: unless-stopped
+    command:
+      - "start"
+      - "--config=/theta_mainnet/guardian_mainnet/node"
+      - "--password"
+      - "{{ theta_node_password }}"
+    network_mode: host
+    volumes:
+      - /data:/theta_mainnet/guardian_mainnet/node
+    ulimits:
+      nofile: 4096
+    stop_signal: SIGINT
+    stop_grace_period: 2m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2m"
+        max-file: "10"
+  theta-rpc-adaptor:
+    image: protofiremeter/theta-rpc-adaptor:{{ theta_rpc_image_tag }}
+    container_name: theta-eth-rpc
+    restart: unless-stopped
+    network_mode: host
+    stop_signal: SIGINT
+    stop_grace_period: 2m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2m"
+        max-file: "10"

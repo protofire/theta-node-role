@@ -1,0 +1,7 @@
+---
+# defaults file for theta-node
+theta_snapshot_url: https://mainnet-data.thetatoken.org/snapshot
+download_snapshot: yes
+theta_node_image_tag: "3.1.2"
+theta_rpc_image_tag: "0.0.1"
+theta_nat_mapping: false

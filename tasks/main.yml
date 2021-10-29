@@ -1,0 +1,6 @@
+---
+# tasks file for theta-node
+- include: install_docker.yml
+- include: install_docker_compose.yml
+- include: download-snapshot.yml
+- include: service.yml

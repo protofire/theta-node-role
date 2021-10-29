@@ -1,0 +1,27 @@
+FROM golang:1.14.2-stretch as builder
+
+ENV GO111MODULE=on
+
+RUN mkdir -p /go/src/github.com/thetatoken && \
+    git clone https://github.com/thetatoken/theta-protocol-ledger.git /go/src/github.com/thetatoken/theta && \
+    cd /go/src/github.com/thetatoken/theta && git checkout privatenet && \
+    make install && \
+    git clone https://github.com/thetatoken/theta-eth-rpc-adaptor.git /go/src/github.com/thetatoken/theta_rpc_adaptor && \
+    cd /go/src/github.com/thetatoken/theta_rpc_adaptor && \
+    make install
+
+FROM ubuntu:latest
+
+LABEL "maintainer"="Protofire"
+
+EXPOSE 18888 18889
+
+RUN mkdir -p /theta_mainnet/eth-rpc-adaptor
+
+COPY --from=builder /go/bin/theta-eth-rpc-adaptor /usr/local/bin/theta-eth-rpc-adaptor
+
+COPY ./config.yaml /theta_mainnet/eth-rpc-adaptor/config.yaml
+
+ENTRYPOINT ["theta-eth-rpc-adaptor"]
+
+CMD ["start", "--config=/theta_mainnet/eth-rpc-adaptor"]

@@ -1,0 +1,17 @@
+---
+- name: Get shapshot URL
+  uri:
+    url: "{{ theta_snapshot_url }}"
+    method: GET
+    follow_redirects: yes
+    return_content: yes
+  register: snapshot
+  when: download_snapshot
+
+- name: Download snapshot
+  become: yes
+  get_url:
+    url: "{{ snapshot.content }}"
+    dest: "/data/snapshot"
+    mode: '0440'
+  when: download_snapshot
